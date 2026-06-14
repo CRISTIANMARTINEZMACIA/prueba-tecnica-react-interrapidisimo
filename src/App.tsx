@@ -1,23 +1,14 @@
-import { Suspense } from "react";
 import "./App.css";
-import { Product } from "./components/Product";
-
-import { SkeletonGrid } from "./components/SkeletonGrid";
-import { Grid } from "@mui/material";
+import { ProductList } from "./components/ProductList";
+import { DetailProduct } from "./components/DetailsProduct";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Suspense
-        fallback={
-          <Grid container spacing={2}>
-            <SkeletonGrid amount={10} />
-          </Grid>
-        }
-      >
-        <Product />
-      </Suspense>
-    </>
+    <Routes>
+      <Route path="/" element={<ProductList />} />
+      <Route path="/products/:id" element={<DetailProduct />} />
+    </Routes>
   );
 }
 

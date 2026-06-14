@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -9,33 +8,54 @@ import {
   Grid,
   Rating,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../services/getProductById";
 import { ReviewCard } from "./ReviewCard";
-import { useState } from "react";
+import { LabelInformation } from "./LabelInformation";
+import { SpecificationStack } from "./SpecificationStack";
+import { ShoppingCartAction } from "./ShoppingCartAction";
+import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
 
 export const DetailProduct = () => {
   const { id } = useParams<{ id: string }>();
-  const [amount, setAmount] = useState(0);
-
+  const shoppingCart = useShoppingCartStore((state) => state.shoppingCart);
   const { data } = useSuspenseQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById(id),
     staleTime: 1000 * 60 * 5,
   });
 
-  const product = data.error ? null : data.data?.products[0];
+  const product = data.error ? null : data.data?.products;
+
+  if (!product) {
+    return (
+      <Card>
+        <CardHeader title="Se ha presentado un error" />
+        <CardContent>
+          <Typography>{data.message}</Typography>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
-      <CardHeader title={product?.title} />
+      <CardHeader
+        title={product?.title}
+        subheader={
+          shoppingCart.some((cart) => cart.product.id === product.id) ? (
+            <Chip label="En carrito" color="secondary" />
+          ) : (
+            ""
+          )
+        }
+      />
       <CardMedia
         component="img"
-        height="194"
+        height="300"
         image={product?.images[0]}
         alt={product?.title}
       />
@@ -59,65 +79,32 @@ export const DetailProduct = () => {
             ({product?.rating}/5) - ({product?.reviews.length} reseñas)
           </Typography>
         </Stack>
-        <Grid>
-          <Typography>Descripcion</Typography>
-          <Typography>{product?.description}</Typography>
-        </Grid>
-        <Grid>
-          <Typography>Especificaciones</Typography>
-          <Stack direction="row" spacing={1}>
-            <Grid>
-              <Typography>Precio</Typography>
-              <Typography>{product?.price}</Typography>
-            </Grid>
-            <Grid>
-              <Typography>Stock disponible</Typography>
-              <Typography>{product?.stock}</Typography>
-            </Grid>
-            <Grid>
-              <Typography>Peso</Typography>
-              <Typography>{product?.weight}</Typography>
-            </Grid>
-            <Grid>
-              <Typography>Dimensiones</Typography>
-              <Typography>
-                {product?.dimensions.width} x {product?.dimensions.height} x{" "}
-                {product?.dimensions.depth} cm
-              </Typography>
-            </Grid>
-          </Stack>
-        </Grid>
-        <Grid>
-          <Typography>Garantia</Typography>
-          <Typography>{product?.warrantyInformation}</Typography>
-        </Grid>
-        <Grid>
-          <Typography>Envio</Typography>
-          <Typography>{product?.shippingInformation}</Typography>
-        </Grid>
-        <Grid container spacing={2}>
-          {product?.reviews.map((item, index) => {
-            return (
-              <Grid key={index} size={{ xs: 12, md: 3 }}>
-                <ReviewCard review={item} />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <LabelInformation title={"Descripción"} value={product?.description} />
+
+        <SpecificationStack product={product} />
+
+        <LabelInformation
+          title={"Garantía"}
+          value={product?.warrantyInformation}
+        />
+        <LabelInformation
+          title={"Envió"}
+          value={product?.shippingInformation}
+        />
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
-        <TextField
-          label="Buscar productos..."
-          variant="outlined"
-          fullWidth
-          value={amount}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setAmount(parseInt(event.target.value))
-          }
-          style={{ marginBottom: "20px" }}
-        />
-        <Button size="small">Añadir al carrito</Button>
+        <ShoppingCartAction product={product} />
       </CardActions>
+
+      <Grid container spacing={2}>
+        {product?.reviews.map((item, index) => {
+          return (
+            <Grid key={index} size={{ xs: 12, md: 3 }}>
+              <ReviewCard review={item} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </Card>
   );
 };

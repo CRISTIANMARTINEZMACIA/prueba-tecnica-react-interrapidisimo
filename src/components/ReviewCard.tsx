@@ -12,7 +12,7 @@ export interface ReviewCardProps {
 }
 export const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
-    <Card>
+    <Card variant="elevation">
       <CardHeader title={review.reviewerName} subheader={review.date} />
       <CardContent>
         <Rating name="read-only" value={review.rating} readOnly />

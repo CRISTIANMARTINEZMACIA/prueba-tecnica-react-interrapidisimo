@@ -1,11 +1,12 @@
+import type { ProductResponse } from "../models/product";
 import type { Response, Root } from "../models/response";
 import api from "./api";
 
-export const findProduct = async (
+export const findProduct = async <T extends ProductResponse>(
   skip: number,
   search?: string,
   category?: string
-): Promise<Response> => {
+): Promise<Response<T[]>> => {
   const params = new URLSearchParams({
     skip: skip.toString(),
     limit: "12",
@@ -22,7 +23,7 @@ export const findProduct = async (
       message: "Productos obtenidos correctamente",
       data:
         category && search
-          ? (response.data as Root).products.filter((item) =>
+          ? (response.data as Root<T[]>).products.filter((item) =>
               item.title.includes(search)
             )
           : response.data,

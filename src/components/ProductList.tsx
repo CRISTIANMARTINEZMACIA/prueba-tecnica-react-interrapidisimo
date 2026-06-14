@@ -9,7 +9,7 @@ import { SkeletonGrid } from "./SkeletonGrid";
 import { useSearchParams } from "react-router-dom";
 import { FilterProductForm } from "./FilterProductForm";
 
-export const Product = () => {
+export const ProductList = () => {
   const { ref, inView } = useInView();
   const [searchParams] = useSearchParams();
   const search = searchParams.get("q") ?? "";
