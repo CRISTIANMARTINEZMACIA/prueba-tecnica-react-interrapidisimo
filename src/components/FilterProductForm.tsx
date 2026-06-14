@@ -28,7 +28,7 @@ export const FilterProductForm = () => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{width:"100%"}}>
       <Grid size={{ xs: 12, md: 6 }}>
         <TextField
           label="Buscar productos..."

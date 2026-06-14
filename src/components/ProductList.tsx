@@ -39,7 +39,6 @@ export const ProductList = () => {
   return (
     <React.Fragment>
       <FilterProductForm />
-      <hr />
       <Grid container spacing={2}>
         {products.map((item) => {
           return (
