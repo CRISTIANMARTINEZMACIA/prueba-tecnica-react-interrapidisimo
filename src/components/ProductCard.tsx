@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { ProductResponse } from "../models/product";
-
+import { NavLink } from "react-router-dom";
 export interface ProductCardProps {
   product: ProductResponse;
 }
@@ -46,7 +46,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <Typography variant="h5" color="primary">
           {product.price}
         </Typography>
-        <Button size="small">Ver detalles</Button>
+        <NavLink
+          end
+          className={({ isActive }) => (isActive ? "active" : "inactive")}
+          to={`/products/${product.id}`}
+        >
+          <Button size="small">Ver detalle</Button>
+        </NavLink>
       </CardActions>
     </Card>
   );

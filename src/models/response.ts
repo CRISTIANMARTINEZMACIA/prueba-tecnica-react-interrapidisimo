@@ -1,14 +1,12 @@
-import type { ProductResponse } from "./product";
-
-export interface Response{
+export interface Response<T>{
   error: boolean;
   message: string;
-  data: Root | null;
+  data: Root<T> | null;
 }
 
-export interface Root{
-  products: ProductResponse[];
-  total: number;
-  skip: number;
-  limit: number;
+export interface Root<T> {
+  products: T;
+  total?: number;
+  skip?: number;
+  limit?: number;
 }
