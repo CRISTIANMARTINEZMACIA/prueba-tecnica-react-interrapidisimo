@@ -16,11 +16,39 @@ export const useShoppingCartStore = create<ShoppingCartState>()(
 
       addToCart: (shoppingCart: ShoppingCart) =>
         set((state) => {
-          const exists = state.shoppingCart.some(
+          const { product, amount } = shoppingCart;
+          const subTotal = product.price * amount;
+          const tax = subTotal * 0.19;
+
+          const exists = state.shoppingCart.find(
             (item) => item.product.id === shoppingCart.product.id
           );
-          if (exists) return state;
-          return { shoppingCart: [...state.shoppingCart, shoppingCart] };
+          if (exists) {
+            const newShoppingCart = state.shoppingCart.filter(
+              (item) => item.product.id !== exists.product.id
+            );
+            return {
+              shoppingCart: [
+                ...newShoppingCart,
+                {
+                  ...exists,
+                  amount: exists.amount + amount,
+                  subTotal: (exists.subTotal ?? 0) + subTotal,
+                  tax: (exists.tax ?? 0) + tax,
+                  total: (exists.total ?? 0) + subTotal + tax,
+                },
+              ],
+            };
+          }
+
+          const newShoppingCart = {
+            ...shoppingCart,
+            subTotal: subTotal,
+            tax: tax,
+            total: subTotal + tax,
+          };
+
+          return { shoppingCart: [...state.shoppingCart, newShoppingCart] };
         }),
 
       removeFromCart: (productId) =>
