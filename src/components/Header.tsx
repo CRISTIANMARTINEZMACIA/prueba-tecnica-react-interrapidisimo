@@ -12,8 +12,12 @@ export const Header = () => {
   return (
     <Grid container spacing={2}>
       <ShoppingCart open={open} handleClose={() => setOpen(false)} />
-      <Grid sx={{ justifyContent: "end" }}>
-        <Button onClick={() => setOpen(true)} variant="outlined">
+      <Grid sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+        <Button
+          sx={{ alignItems: "end" }}
+          onClick={() => setOpen(true)}
+          variant="outlined"
+        >
           <Badge badgeContent={shoppingCart.length} color="secondary">
             <ShoppingCartIcon color="primary" fontSize="large" />
           </Badge>

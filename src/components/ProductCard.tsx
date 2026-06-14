@@ -49,7 +49,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <NavLink
           end
           className={({ isActive }) => (isActive ? "active" : "inactive")}
-          to={`/products/${product.id}`}
+          to={`/panel/products/${product.id}`}
         >
           <Button size="small">Ver detalle</Button>
         </NavLink>

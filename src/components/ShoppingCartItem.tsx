@@ -1,10 +1,14 @@
-import { CardContent, Stack, Typography, Card } from "@mui/material";
+import { CardContent, Stack, Typography, Card, Button } from "@mui/material";
 import type { ShoppingCart } from "../models/shoppingCart";
 import { LabelInformation } from "./LabelInformation";
+import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
 
 export const ShoppingCartItem = ({ item }: { item: ShoppingCart }) => {
+  const remove = useShoppingCartStore((state) => state.removeFromCart);
+
   return (
-    <Card>
+    <Card sx={{ margin: "10px" }} variant="elevation">
       <CardContent>
         <Stack direction={"row"} spacing={5}>
           <Typography>{item.product.title}</Typography>
@@ -24,6 +28,13 @@ export const ShoppingCartItem = ({ item }: { item: ShoppingCart }) => {
             title="Total"
             value={item?.total?.toString() ?? "0"}
           />
+          <Button
+            color="error"
+            onClick={() => remove(item.product.id)}
+            variant="outlined"
+          >
+            <DeleteOutlineIcon />
+          </Button>
         </Stack>
       </CardContent>
     </Card>

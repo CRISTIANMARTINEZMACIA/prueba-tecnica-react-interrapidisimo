@@ -18,7 +18,7 @@ export const useShoppingCartStore = create<ShoppingCartState>()(
         set((state) => {
           const { product, amount } = shoppingCart;
           const subTotal = product.price * amount;
-          const tax = subTotal * 0.19;
+          const tax = Number((subTotal * 0.19).toFixed(2));
 
           const exists = state.shoppingCart.find(
             (item) => item.product.id === shoppingCart.product.id
