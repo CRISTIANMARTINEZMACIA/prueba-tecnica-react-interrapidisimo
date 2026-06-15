@@ -89,7 +89,7 @@ describe("Integration Test: Añadir al carrito -> Ver total actualizado", () => 
     await user.clear(quantityInput);
     await user.type(quantityInput, "2");
 
-    expect(screen.getByText("200")).toBeInTheDocument();
+    expect(screen.getByText("200.00")).toBeInTheDocument();
 
     const addButton = screen.getByRole("button", {
       name: /añadir al carrito/i,
@@ -113,7 +113,7 @@ describe("Integration Test: Añadir al carrito -> Ver total actualizado", () => 
 
       expect(
         within(productItem).getByTestId("cart-product-item-subtotal")
-      ).toHaveTextContent("200");
+      ).toHaveTextContent("200.00");
       expect(
         within(productItem).getByTestId("cart-product-item-tax")
       ).toHaveTextContent("38");
