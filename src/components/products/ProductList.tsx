@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { findProduct } from "../services/findProducts";
+import { findProduct } from "../../services/findProducts";
 import { ProductCard } from "./ProductCard";
 import { Grid } from "@mui/material";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import React from "react";
-import { SkeletonGrid } from "./SkeletonGrid";
+import { SkeletonGrid } from "../shoppingCard/SkeletonGrid";
 import { useSearchParams } from "react-router-dom";
 import { FilterProductForm } from "./FilterProductForm";
 
@@ -15,7 +15,7 @@ export const ProductList = () => {
   const search = searchParams.get("q") ?? "";
   const category = searchParams.get("category") ?? "";
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useSuspenseInfiniteQuery({
       queryKey: ["products", search, category],
       queryFn: ({ pageParam }) => findProduct(pageParam, search, category),
@@ -31,6 +31,14 @@ export const ProductList = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoading) {
+    return (
+      <Grid sx={{ width: "100%", height: "100%" }}>
+        <SkeletonGrid amount={10} />
+      </Grid>
+    );
+  }
 
   const products =
     data?.pages.flatMap((page) => page.data?.products ?? []).filter(Boolean) ??

@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { ProductResponse } from "../models/product";
+import type { ProductResponse } from "../../models/product";
 import { NavLink } from "react-router-dom";
 export interface ProductCardProps {
   product: ProductResponse;

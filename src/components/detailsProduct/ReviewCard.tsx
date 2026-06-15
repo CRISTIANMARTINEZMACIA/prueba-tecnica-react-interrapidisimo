@@ -5,7 +5,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import type { Review } from "../models/product";
+import type { Review } from "../../models/product";
 
 export interface ReviewCardProps {
   review: Review;

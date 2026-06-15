@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Grid } from "@mui/material";
-import { SkeletonGrid } from "./SkeletonGrid";
+import { SkeletonGrid } from "../shoppingCard/SkeletonGrid";
 import { ProductList } from "./ProductList";
 
 export const ProductPage = () => {
