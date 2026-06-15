@@ -26,14 +26,17 @@ export const ShoppingCart = ({
         anchor={anchor}
         open={open}
         onClose={handleClose}
-        sx={{ margin: "10px" , '& .MuiDrawer-paper': {
-        boxSizing: 'border-box',
-        width: {
-          xs: '80%',  
-          sm: '400px', 
-          md: '450px',
-        },
-      },}}
+        sx={{
+          margin: "10px",
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: {
+              xs: "80%",
+              sm: "400px",
+              md: "450px",
+            },
+          },
+        }}
       >
         <Stack>
           <Button onClick={handleClose} color="error" variant="outlined">
@@ -67,6 +70,7 @@ export const ShoppingCart = ({
             value={
               shoppingCart
                 .reduce((acc, item) => acc + (item.tax ?? 0), 0)
+                .toFixed(2)
                 .toString() ?? "0"
             }
             testId="cart-summary-tax"
@@ -76,6 +80,7 @@ export const ShoppingCart = ({
             value={
               shoppingCart
                 .reduce((acc, item) => acc + (item.total ?? 0), 0)
+                .toFixed(2)
                 .toString() ?? "0"
             }
             testId="cart-summary-total"
