@@ -68,7 +68,7 @@ export const ShoppingCartAction = ({
       <LabelInformation title={"Precio"} value={product?.price.toString()} />
       <LabelInformation
         title={"Total"}
-        value={(product?.price * amount).toString()}
+        value={(product?.price * amount).toFixed(2).toString() ?? "0"}
       />
       <LabelInformation title={"Stock"} value={availableAmount.toString()} />
       <Button onClick={handleAdd} size="small" variant="contained">

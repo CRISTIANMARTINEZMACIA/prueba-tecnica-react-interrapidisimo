@@ -22,17 +22,17 @@ export const ShoppingCartItem = ({ item }: { item: ShoppingCart }) => {
         <Stack direction={"row"} spacing={5}>
           <LabelInformation
             title="Subtotal"
-            value={item?.subTotal?.toString() ?? "0"}
+            value={item?.subTotal?.toFixed(2).toString() ?? "0"}
             testId="cart-product-item-subtotal"
           />
           <LabelInformation
             title="Impuestos"
-            value={item?.tax?.toString() ?? "0"}
+            value={item?.tax?.toFixed(2).toString() ?? "0"}
             testId="cart-product-item-tax"
           />
           <LabelInformation
             title="Total"
-            value={item?.total?.toString() ?? "0"}
+            value={item?.total?.toFixed(2).toString() ?? "0"}
             testId="cart-product-item-total"
           />
           <Button

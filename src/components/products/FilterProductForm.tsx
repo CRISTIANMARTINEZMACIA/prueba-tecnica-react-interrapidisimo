@@ -29,17 +29,21 @@ export const FilterProductForm = () => {
   });
 
   const handleSearch = () => {
+    const nuevosParams = new URLSearchParams(searchParams);
+
     if (filterCategory) {
-      setSearchParams({ category: filterCategory });
+      nuevosParams.set("category", filterCategory);
+    } else {
+      nuevosParams.delete("category");
     }
 
     if (filterSearch) {
-      setSearchParams({ q: filterSearch });
+      nuevosParams.set("q", filterSearch);
+    } else {
+      nuevosParams.delete("q");
     }
 
-    if (!filterCategory && !filterSearch) {
-      setSearchParams({});
-    }
+    setSearchParams(nuevosParams);
   };
 
   const findCategories = useMemo(() => {
