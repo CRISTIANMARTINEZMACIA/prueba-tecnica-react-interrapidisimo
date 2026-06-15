@@ -25,7 +25,7 @@ export const DetailProductCard = ({
   const shoppingCart = useShoppingCartStore((state) => state.shoppingCart);
 
   return (
-    <Card>
+    <Card sx={{ maxWidth: "100%"}}>
       <CardHeader
         title={product?.title}
         subheader={

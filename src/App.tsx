@@ -9,7 +9,7 @@ import { Error500View } from "./components/errors/Error500View";
 import { Suspense } from "react";
 import { DetailErrorBoundary } from "./components/errors/DetailErrorBoundary";
 import { Grid } from "@mui/material";
-import { SkeletonGrid } from "./components/shoppingCard/SkeletonGrid";
+import { SkeletonGrid } from "./components/common/SkeletonGrid";
 import { ProductPage } from "./components/products/ProductPage";
 
 function App() {

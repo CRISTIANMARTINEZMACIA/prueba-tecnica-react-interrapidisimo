@@ -12,10 +12,7 @@ export const DetailProduct = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  console.log(data);
   const product = data.error ? null : data.data?.products;
-
-  console.log(product);
 
   return product === undefined ? null : (
     <DetailProductCard product={product as ProductResponse} />

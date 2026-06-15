@@ -9,7 +9,7 @@ export interface LabelInformationProps {
 export const LabelInformation = ({ title, value, testId }: LabelInformationProps) => {
   return (
     <Grid>
-      <Typography>{title}</Typography>
+      <Typography sx={{fontWeight: "bold"}}>{title}</Typography>
       <Typography data-testid={testId || title}>{value}</Typography>
     </Grid>
   );

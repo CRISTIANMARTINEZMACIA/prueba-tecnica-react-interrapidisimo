@@ -4,6 +4,7 @@ import { useShoppingCartStore } from "../../hooks/useShoppingCartStore";
 import { ShoppingCartItem } from "./ShoppingCartItem";
 import { LabelInformation } from "../common/LabelInformation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
+import CloseIcon from "@mui/icons-material/CloseOutlined";
 
 export interface ShoppingCart {
   open: boolean;
@@ -25,15 +26,32 @@ export const ShoppingCart = ({
         anchor={anchor}
         open={open}
         onClose={handleClose}
-        sx={{ margin: "10px" }}
+        sx={{ margin: "10px" , '& .MuiDrawer-paper': {
+        boxSizing: 'border-box',
+        width: {
+          xs: '80%',  
+          sm: '400px', 
+          md: '450px',
+        },
+      },}}
       >
+        <Stack>
+          <Button onClick={handleClose} color="error" variant="outlined">
+            <CloseIcon></CloseIcon>
+          </Button>
+        </Stack>
         {shoppingCart.length > 0 &&
           shoppingCart.map((item) => {
             return <ShoppingCartItem key={item.product.id} item={item} />;
           })}
 
         <hr />
-        <Stack direction={"row"} spacing={5} sx={{ paddingLeft: "10px" }} data-testid="cart-summary">
+        <Stack
+          direction={"row"}
+          spacing={5}
+          sx={{ paddingLeft: "10px" }}
+          data-testid="cart-summary"
+        >
           <LabelInformation
             title="Subtotal"
             value={
@@ -51,7 +69,7 @@ export const ShoppingCart = ({
                 .reduce((acc, item) => acc + (item.tax ?? 0), 0)
                 .toString() ?? "0"
             }
-           testId="cart-summary-tax"
+            testId="cart-summary-tax"
           />
           <LabelInformation
             title="Total"
