@@ -34,10 +34,21 @@ export const ShoppingCartAction = ({
     setOpen(true);
   };
 
-  const availableAmount = product.stock - usedStock - amount;
+  const availableAmount = product.stock - usedStock;
 
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value ? parseInt(event.target.value) : 0;
+    if (value > availableAmount) {
+      setAmount(availableAmount);
+      return;
+    }
+    setAmount(value);
+  };
   return (
-    <Stack direction="row" spacing={5}>
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={{ xs: 2, sm: 3, md: 4 }}
+    >
       <ProcessSnackBar
         open={open}
         handleClose={() => setOpen(false)}
@@ -50,11 +61,10 @@ export const ShoppingCartAction = ({
         value={amount}
         type="number"
         required
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          setAmount(event.target.value ? parseInt(event.target.value) : 0)
-        }
+        onChange={handleOnChange}
         style={{ marginBottom: "20px" }}
       />
+
       <LabelInformation title={"Precio"} value={product?.price.toString()} />
       <LabelInformation
         title={"Total"}

@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { SkeletonCard } from "../common/SkeletonCard";
+import { SkeletonCard } from "./SkeletonCard";
 
 export const SkeletonGrid = ({ amount = 4 }: { amount?: number }) => (
   <>

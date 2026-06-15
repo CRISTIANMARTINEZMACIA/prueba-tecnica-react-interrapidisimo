@@ -10,7 +10,10 @@ export const SpecificationStack = ({
   return (
     <Grid>
       <Typography>Especificaciones</Typography>
-      <Stack direction="row" spacing={1}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={{ xs: 2, sm: 3, md: 4 }}
+      >
         <LabelInformation title={"Precio"} value={product?.price.toString()} />
         <LabelInformation title={"Stock"} value={product?.stock.toString()} />
         <LabelInformation title={"Peso"} value={product?.weight.toString()} />

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   Grid,
@@ -58,43 +59,53 @@ export const FilterProductForm = () => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ width: "100%" }}>
-      <Grid size={{ xs: 12, md: 5 }}>
-        <TextField
-          label="Buscar productos..."
-          variant="outlined"
-          fullWidth
-          value={filterSearch}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setFilterSearch(event.target.value)
-          }
-          style={{ marginBottom: "20px" }}
-        />
+    <Box sx={{ width: "100%", overflow: "hidden" }}>
+      <Grid container spacing={2} sx={{ width: "100%" }}>
+        <Grid size={{ xs: 12, md: 5 }}>
+          <TextField
+            label="Buscar productos..."
+            variant="outlined"
+            fullWidth
+            value={filterSearch}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setFilterSearch(event.target.value)
+            }
+            style={{ marginBottom: "20px" }}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 5 }}>
+          <FormControl variant="outlined" sx={{ md: 5, minWidth: "100%" }}>
+            <InputLabel id="demo-simple-select-outlined-label">
+              Categoría
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={findCategories.length > 0 ? filterCategory : "Ninguno"}
+              onChange={handleChange}
+              label="Age"
+            >
+              <MenuItem value={"Ninguno"}>{"Ninguno"}</MenuItem>;
+              {findCategories.map((category) => {
+                return <MenuItem value={category}>{category}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid
+          size={{ xs: 12, md: 2 }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <Button onClick={handleSearch} variant="contained">
+            Buscar
+          </Button>
+        </Grid>
       </Grid>
-      <Grid size={{ xs: 12, md: 5 }}>
-        <FormControl variant="outlined" sx={{ md: 5, minWidth: "100%" }}>
-          <InputLabel id="demo-simple-select-outlined-label">
-            Categoría
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value={findCategories.length > 0 ? filterCategory : "Ninguno"}
-            onChange={handleChange}
-            label="Age"
-          >
-            <MenuItem value={"Ninguno"}>{"Ninguno"}</MenuItem>;
-            {findCategories.map((category) => {
-              return <MenuItem value={category}>{category}</MenuItem>;
-            })}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid size={{ xs: 12, md: 2 }} sx={{ display: "flex", justifyContent: 'center', alignItems: "center", marginBottom: "20px" }}>
-        <Button onClick={handleSearch} variant="contained">
-          Buscar
-        </Button>
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
