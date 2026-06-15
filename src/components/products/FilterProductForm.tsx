@@ -1,6 +1,17 @@
-import { Grid, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  type SelectChangeEvent,
+} from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import { useState, type FocusEvent } from "react";
+import { useMemo, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { findProduct } from "../../services/findProducts";
 
 export const FilterProductForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,51 +20,80 @@ export const FilterProductForm = () => {
   const [filterSearch, setFilterSearch] = useState(search);
   const [filterCategory, setFilterCategory] = useState(category);
 
-  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value) {
-      setSearchParams({ q: value });
-    } else {
+  const { data } = useInfiniteQuery({
+    queryKey: ["products"],
+    queryFn: ({ pageParam }) => findProduct(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: () => undefined,
+  });
+
+  const handleSearch = () => {
+    if (filterCategory) {
+      setSearchParams({ category: filterCategory });
+    }
+
+    if (filterSearch) {
+      setSearchParams({ q: filterSearch });
+    }
+
+    if (!filterCategory && !filterSearch) {
       setSearchParams({});
     }
   };
 
-  const handleFocusCategory = (event: FocusEvent<HTMLInputElement>) => {
+  const findCategories = useMemo(() => {
+    const products =
+      data?.pages
+        .flatMap((page) => page.data?.products ?? [])
+        .filter(Boolean) ?? [];
+    const categories = products.map((product) => product.category);
+
+    return [...new Set(categories)];
+  }, [data]);
+
+  const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
-    if (value) {
-      setSearchParams({ category: value });
-    } else {
-      setSearchParams({});
-    }
+
+    setFilterCategory(value === "Ninguno" ? "" : value);
   };
 
   return (
-    <Grid container spacing={2} sx={{width:"100%"}}>
-      <Grid size={{ xs: 12, md: 6 }}>
+    <Grid container spacing={2} sx={{ width: "100%" }}>
+      <Grid size={{ xs: 12, md: 5 }}>
         <TextField
           label="Buscar productos..."
           variant="outlined"
           fullWidth
           value={filterSearch}
-          onBlur={handleFocus}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setFilterSearch(event.target.value)
           }
           style={{ marginBottom: "20px" }}
         />
       </Grid>
-      <Grid size={{ xs: 12, md: 6 }}>
-        <TextField
-          label="Buscar categoría..."
-          variant="outlined"
-          fullWidth
-          value={filterCategory}
-          onBlur={handleFocusCategory}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setFilterCategory(event.target.value)
-          }
-          style={{ marginBottom: "20px" }}
-        />
+      <Grid size={{ xs: 12, md: 5 }}>
+        <FormControl variant="outlined" sx={{ md: 5, minWidth: "100%" }}>
+          <InputLabel id="demo-simple-select-outlined-label">
+            Categoría
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={findCategories.length > 0 ? filterCategory : "Ninguno"}
+            onChange={handleChange}
+            label="Age"
+          >
+            <MenuItem value={"Ninguno"}>{"Ninguno"}</MenuItem>;
+            {findCategories.map((category) => {
+              return <MenuItem value={category}>{category}</MenuItem>;
+            })}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid size={{ xs: 12, md: 2 }} sx={{ display: "flex", justifyContent: 'center', alignItems: "center", marginBottom: "20px" }}>
+        <Button onClick={handleSearch} variant="contained">
+          Buscar
+        </Button>
       </Grid>
     </Grid>
   );
