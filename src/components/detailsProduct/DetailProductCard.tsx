@@ -10,36 +10,19 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { getProductById } from "../services/getProductById";
+import type { ProductResponse } from "../../models/product";
+import { LabelInformation } from "../common/LabelInformation";
 import { ReviewCard } from "./ReviewCard";
-import { LabelInformation } from "./LabelInformation";
+import { ShoppingCartAction } from "../shoppingCard/ShoppingCartAction";
 import { SpecificationStack } from "./SpecificationStack";
-import { ShoppingCartAction } from "./ShoppingCartAction";
-import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
+import { useShoppingCartStore } from "../../hooks/useShoppingCartStore";
 
-export const DetailProduct = () => {
-  const { id } = useParams<{ id: string }>();
+export const DetailProductCard = ({
+  product,
+}: {
+  product: ProductResponse;
+}) => {
   const shoppingCart = useShoppingCartStore((state) => state.shoppingCart);
-  const { data } = useSuspenseQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById(id),
-    staleTime: 1000 * 60 * 5,
-  });
-
-  const product = data.error ? null : data.data?.products;
-
-  if (!product) {
-    return (
-      <Card>
-        <CardHeader title="Se ha presentado un error" />
-        <CardContent>
-          <Typography>{data.message}</Typography>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card>

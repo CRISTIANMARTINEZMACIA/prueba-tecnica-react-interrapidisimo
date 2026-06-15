@@ -14,28 +14,17 @@ export const findProduct = async <T extends ProductResponse>(
 
   if (search) params.append("q", search);
 
-  try {
-    const endpoint = category ? `category/${category}` : search ? "search" : "";
-    const response = await api.get(`products/${endpoint}?${params.toString()}`);
+  const endpoint = category ? `category/${category}` : search ? "search" : "";
+  const response = await api.get(`products/${endpoint}?${params.toString()}`);
 
-    return {
-      error: false,
-      message: "Productos obtenidos correctamente",
-      data:
-        category && search
-          ? (response.data as Root<T[]>).products.filter((item) =>
-              item.title.includes(search)
-            )
-          : response.data,
-    };
-  } catch (error) {
-    return {
-      error: true,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Error inesperado, contacta al administrador",
-      data: null,
-    };
-  }
+  return {
+    error: false,
+    message: "Productos obtenidos correctamente",
+    data:
+      category && search
+        ? (response.data as Root<T[]>).products.filter((item) =>
+            item.title.includes(search)
+          )
+        : response.data,
+  };
 };

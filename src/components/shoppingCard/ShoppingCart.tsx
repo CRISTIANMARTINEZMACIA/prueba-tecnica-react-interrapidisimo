@@ -1,8 +1,8 @@
 import { Button, Drawer, Stack } from "@mui/material";
 import React from "react";
-import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
+import { useShoppingCartStore } from "../../hooks/useShoppingCartStore";
 import { ShoppingCartItem } from "./ShoppingCartItem";
-import { LabelInformation } from "./LabelInformation";
+import { LabelInformation } from "../common/LabelInformation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
 
 export interface ShoppingCart {
@@ -33,14 +33,16 @@ export const ShoppingCart = ({
           })}
 
         <hr />
-        <Stack direction={"row"} spacing={5} sx={{ paddingLeft: "10px" }}>
+        <Stack direction={"row"} spacing={5} sx={{ paddingLeft: "10px" }} data-testid="cart-summary">
           <LabelInformation
             title="Subtotal"
             value={
               shoppingCart
                 .reduce((acc, item) => acc + (item.subTotal ?? 0), 0)
+                .toFixed(2)
                 .toString() ?? "0"
             }
+            testId="cart-summary-subtotal"
           />
           <LabelInformation
             title="Impuestos"
@@ -49,6 +51,7 @@ export const ShoppingCart = ({
                 .reduce((acc, item) => acc + (item.tax ?? 0), 0)
                 .toString() ?? "0"
             }
+           testId="cart-summary-tax"
           />
           <LabelInformation
             title="Total"
@@ -57,6 +60,7 @@ export const ShoppingCart = ({
                 .reduce((acc, item) => acc + (item.total ?? 0), 0)
                 .toString() ?? "0"
             }
+            testId="cart-summary-total"
           />
           <Button color="error" onClick={() => clear()} variant="outlined">
             <DeleteOutlineIcon />

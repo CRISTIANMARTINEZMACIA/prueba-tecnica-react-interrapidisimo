@@ -1,10 +1,10 @@
 import { TextField, Button, Stack } from "@mui/material";
 import { useState } from "react";
-import type { ProductResponse } from "../models/product";
-import type { ShoppingCart } from "../models/shoppingCart";
-import { LabelInformation } from "./LabelInformation";
-import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
-import { ProcessSnackBar } from "./ProcessSnackBar";
+import type { ProductResponse } from "../../models/product";
+import type { ShoppingCart } from "../../models/shoppingCart";
+import { LabelInformation } from "../common/LabelInformation";
+import { useShoppingCartStore } from "../../hooks/useShoppingCartStore";
+import { ProcessSnackBar } from "../common/ProcessSnackBar";
 
 export const ShoppingCartAction = ({
   product,
