@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { findProduct } from "../../services/findProducts";
 import { ProductCard } from "./ProductCard";
 import { Grid } from "@mui/material";
@@ -15,10 +15,11 @@ export const ProductList = () => {
   const search = searchParams.get("q") ?? "";
   const category = searchParams.get("category") ?? "";
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery({
       queryKey: ["products", search, category],
-      queryFn: ({ pageParam }) => findProduct(pageParam, search, category),
+      queryFn: ({ pageParam }) =>
+        findProduct(pageParam, search, category, "12"),
       initialPageParam: 0,
       getNextPageParam: ({ data }) =>
         (data?.skip ?? 0) + (data?.limit ?? 0) < (data?.total ?? 0)
@@ -32,17 +33,15 @@ export const ProductList = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) {
-    return (
-      <Grid sx={{ width: "100%", height: "100%" }}>
-        <SkeletonGrid amount={10} />
-      </Grid>
-    );
-  }
+  console.log(data);
 
-  const products =
-    data?.pages.flatMap((page) => page.data?.products ?? []).filter(Boolean) ??
-    [];
+  const products = useMemo(() => {
+    return (
+      data?.pages
+        .flatMap((page) => page.data?.products ?? [])
+        .filter(Boolean) ?? []
+    );
+  }, [data]);
 
   return (
     <React.Fragment>
@@ -56,18 +55,18 @@ export const ProductList = () => {
           );
         })}
         {isFetchingNextPage && <SkeletonGrid />}
+        <div
+          ref={ref}
+          style={{
+            height: "50px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
+        ></div>
       </Grid>
-      <div
-        ref={ref}
-        style={{
-          height: "50px",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      ></div>
     </React.Fragment>
   );
 };

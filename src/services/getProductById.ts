@@ -14,13 +14,14 @@ export const getProductById = async <T extends ProductResponse>(
   }
   const response = await api.get(`products/${id}`);
 
-  
   const data =
     response.data.id != null
       ? {
-          error: true,
+          error: false,
           message: "Producto encontrado",
-          data: response.data,
+          data: {
+            products: response.data,
+          },
         }
       : {
           error: true,

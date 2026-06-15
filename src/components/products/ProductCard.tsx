@@ -19,7 +19,7 @@ export interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Card>
-      <CardHeader title={product.title} />
+      <CardHeader title={product.title.slice(0, 20) + "..."} />
       <CardMedia
         component="img"
         height="194"
@@ -32,7 +32,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <Typography>({product.rating})</Typography>
         </Stack>
 
-        <Typography>{product.description}</Typography>
+        <Typography>{product.description.slice(0, 50) + "..."}</Typography>
         <Stack direction="row" spacing={1}>
           <Chip label={product.category} color="secondary" variant="outlined" />
           <Chip

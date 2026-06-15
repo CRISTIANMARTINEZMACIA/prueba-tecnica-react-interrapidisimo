@@ -5,26 +5,29 @@ import api from "./api";
 export const findProduct = async <T extends ProductResponse>(
   skip: number,
   search?: string,
-  category?: string
+  category?: string,
+  limit?: string
 ): Promise<Response<T[]>> => {
   const params = new URLSearchParams({
     skip: skip.toString(),
-    limit: "12",
   });
 
+  if (limit) params.append("limit", limit);
   if (search) params.append("q", search);
 
-  const endpoint = category ? `category/${category}` : search ? "search" : "";
+  const endpoint = search ? "search" : "";
   const response = await api.get(`products/${endpoint}?${params.toString()}`);
 
   return {
     error: false,
     message: "Productos obtenidos correctamente",
-    data:
-      category && search
-        ? (response.data as Root<T[]>).products.filter((item) =>
-            item.title.includes(search)
-          )
-        : response.data,
+    data: category
+      ? {
+          ...response.data,
+          products: (response.data as Root<T[]>).products.filter(
+            (item) => item.category == category
+          ),
+        }
+      : response.data,
   };
 };
