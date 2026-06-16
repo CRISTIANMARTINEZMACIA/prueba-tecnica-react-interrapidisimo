@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, beforeEach, it, jest } from "@jest/globals";
 import { render, screen, waitFor, within } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -7,10 +8,10 @@ import { Suspense } from "react";
 import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
 import { getProductById } from "../services/getProductById";
 import { DetailProduct } from "../components/detailsProduct/DetailsProduct";
-import { ShoppingCart } from "../components/shoppingCard/ShoppingCart";
+import { ShoppingCart } from "../components/shoppingCart/ShoppingCart";
 
-vi.mock("../services/getProductById", () => ({
-  getProductById: vi.fn(),
+jest.mock("../services/getProductById", () => ({
+  getProductById: jest.fn(),
 }));
 
 const mockProductResponse = {
@@ -61,12 +62,12 @@ describe("Integration Test: Añadir al carrito -> Ver total actualizado", () => 
     queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     });
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it("debería completar exitosamente el flujo de compra y actualizar los totales en el Drawer", async () => {
     const user = userEvent.setup();
-    vi.mocked(getProductById).mockResolvedValue(mockProductResponse);
+    jest.mocked(getProductById).mockResolvedValue(mockProductResponse);
 
     const { rerender } = render(
       <QueryClientProvider client={queryClient}>
@@ -89,7 +90,7 @@ describe("Integration Test: Añadir al carrito -> Ver total actualizado", () => 
     await user.clear(quantityInput);
     await user.type(quantityInput, "2");
 
-    expect(screen.getByText("200.00")).toBeInTheDocument();
+    expect(screen.getByTestId("detail-product-item-total")).toHaveTextContent("200.00");
 
     const addButton = screen.getByRole("button", {
       name: /añadir al carrito/i,
@@ -108,7 +109,6 @@ describe("Integration Test: Añadir al carrito -> Ver total actualizado", () => 
     );
 
     await waitFor(() => {
-     
       const productItem = screen.getByTestId("cart-product-item");
 
       expect(

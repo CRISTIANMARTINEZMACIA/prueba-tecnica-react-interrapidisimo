@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, beforeEach, it} from '@jest/globals';
 import { useShoppingCartStore } from "../hooks/useShoppingCartStore";
 import type { ProductResponse } from "../models/product";
 

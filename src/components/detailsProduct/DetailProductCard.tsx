@@ -13,7 +13,7 @@ import {
 import type { ProductResponse } from "../../models/product";
 import { LabelInformation } from "../common/LabelInformation";
 import { ReviewCard } from "./ReviewCard";
-import { ShoppingCartAction } from "../shoppingCard/ShoppingCartAction";
+import { ShoppingCartAction } from "../shoppingCart/ShoppingCartAction";
 import { SpecificationStack } from "./SpecificationStack";
 import { useShoppingCartStore } from "../../hooks/useShoppingCartStore";
 
@@ -25,7 +25,7 @@ export const DetailProductCard = ({
   const shoppingCart = useShoppingCartStore((state) => state.shoppingCart);
 
   return (
-    <Card sx={{ maxWidth: "100%"}}>
+    <Card sx={{ maxWidth: "100%", border: "2px solid #ccc" }}>
       <CardHeader
         title={product?.title}
         subheader={

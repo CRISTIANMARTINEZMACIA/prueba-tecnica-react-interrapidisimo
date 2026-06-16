@@ -10,7 +10,7 @@ import React from "react";
 
 const SkeletonCardComponent = () => {
   return (
-    <Card>
+    <Card sx={{border: "2px solid #ccc"}}>
       <CardHeader
         title={<Skeleton height={10} width="80%" style={{ marginBottom: 6 }} />}
       />

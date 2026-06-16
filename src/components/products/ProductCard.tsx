@@ -18,8 +18,8 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <Card>
-      <CardHeader title={product.title.slice(0, 20) + "..."} />
+    <Card sx={{border: "2px solid #ccc"}}>
+      <CardHeader title={product.title.slice(0, 15) + "..."} />
       <CardMedia
         component="img"
         height="194"
