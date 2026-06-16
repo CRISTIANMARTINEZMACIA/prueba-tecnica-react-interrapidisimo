@@ -13,6 +13,7 @@ export const ShoppingCartAction = ({
 }) => {
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
   const addToCart = useShoppingCartStore((state) => state.addToCart);
 
   const usedStock = useShoppingCartStore((state) => {
@@ -25,6 +26,11 @@ export const ShoppingCartAction = ({
   });
 
   const handleAdd = () => {
+    if (amount === 0) {
+      setError(true);
+      return;
+    }
+
     const newShoppingCartItem: ShoppingCart = {
       product: product,
       amount: amount ?? 0,
@@ -42,17 +48,28 @@ export const ShoppingCartAction = ({
       setAmount(availableAmount);
       return;
     }
+
+    if (value < 0) {
+      setAmount(0);
+      return;
+    }
     setAmount(value);
   };
+
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
       spacing={{ xs: 2, sm: 3, md: 4 }}
     >
       <ProcessSnackBar
-        open={open}
-        handleClose={() => setOpen(false)}
-        message={"PRODUCTO AÑADIDO AL CARRITO"}
+        open={error || open}
+        handleClose={() => {
+          setOpen(false);
+          setError(false);
+        }}
+        message={
+          error ? "Cantidad no puede ser cero" : "PRODUCTO AÑADIDO AL CARRITO"
+        }
       />
       <TextField
         label="Añadir cantidad"
@@ -69,6 +86,7 @@ export const ShoppingCartAction = ({
       <LabelInformation
         title={"Total"}
         value={(product?.price * amount).toFixed(2).toString() ?? "0"}
+        testId="detail-product-item-total"
       />
       <LabelInformation title={"Stock"} value={availableAmount.toString()} />
       <Button onClick={handleAdd} size="small" variant="contained">

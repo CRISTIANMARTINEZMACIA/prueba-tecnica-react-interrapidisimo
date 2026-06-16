@@ -9,7 +9,7 @@ export const ShoppingCartItem = ({ item }: { item: ShoppingCart }) => {
 
   return (
     <Card
-      sx={{ margin: "10px" }}
+      sx={{ margin: "10px", border: "2px solid #ccc"}}
       variant="elevation"
       data-testid="cart-product-item"
     >

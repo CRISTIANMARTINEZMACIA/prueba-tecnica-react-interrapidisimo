@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# 🛒 Product Catalog & Store Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación moderna de comercio electrónico tipo SPA (Single Page Application) construida con **React**, **TypeScript** y **Material UI**. El proyecto implementa renderizado eficiente de datos mediante scroll infinito, filtros avanzados sincronizados con la URL y una arquitectura limpia y desacoplada.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🏗️ Arquitectura del Proyecto
 
-## React Compiler
+Este proyecto se ha estructurado bajo los principios de **Separación de Responsabilidades (Separation of Concerns)** y un enfoque modular escalable. La arquitectura desacopla estrictamente la lógica de negocio, la gestión del estado global y la comunicación con servicios externos de la capa de presentación (UI).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 📁 Estructura de Directorios
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+├── components/          # Componentes de UI puramente visuales y reutilizables
+├────────────── components/products # UI para productos
+├────────────── components/shoppingCart # UI para el carrito de compras
+├────────────── components/error # UI para manejo de errores
+├────────────── components/common # UI común para varios componentes
+├────────────── components/detailsProduct # UI para detalles de productos
+├── hooks/               # Capa de lógica de negocio y estado (Zustand Custom Hooks)
+├── services/            # Capa de infraestructura (Llamados a API, servicios de Checkout)
+└── test/                # Suite de pruebas unitarias y de flujo de integración
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Tecnologías y Dependencias
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+El proyecto utiliza un ecosistema robusto para garantizar el rendimiento, el manejo de estado y una interfaz de usuario pulida:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **UI & Estilos:** [@mui/material](https://mui.com/) (Material UI) junto con Emotion para un diseño responsivo y componentes listos para producción.
+* **Enrutamiento:** `react-router-dom` para la gestión de rutas y sincronización de filtros a través de la URL (`searchParams`).
+* **Asincronía y Caché:** `@tanstack/react-query` para la gestión de peticiones HTTP con soporte nativo de Suspense e Infinite Queries.
+* **Estado Global:** `zustand` para un manejo de estado ligero, rápido y centralizado (como el carrito de compras).
+* **Detección de Scroll:** `react-intersection-observer` para activar la carga perezosa de productos al hacer scroll.
+* **Cliente HTTP:** `axios` (o fetch configurado) para la comunicación con la API de DummyJSON.
+* **Error Boundary:** `react-error-boundary` para manejar los errores globales.
+* **Pruebas:** `jest` `@testing-library` para manejar pruebas unitarias y integración.
+
+### 💻 Comandos de Instalación
+
+Para replicar el entorno de desarrollo y añadir todas las dependencias ejecutadas, utiliza los siguientes comandos en tu terminal:
+
+```bash
+# Instalación de dependencias
+npm install 
+
+# Iniciar la aplicación en desarrollo
+npm run dev 
+
+# Iniciar las pruebas
+npm run test
+
+# Iniciar las pruebas con cobertura
+npm run test:coverage
+
 ```
